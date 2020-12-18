@@ -1,4 +1,4 @@
-![Titulo_github](https://github.com/Iranzubp/Iranzubp/blob/main/Dise%C3%B1o/T%C3%ADtulo.png)
+![Titulo_github](https://github.com/Iranzubp/Grupo_2_IMH/blob/main/Dise%C3%B1o/T%C3%ADtulo.png)
 
 
 ## ¡Hola! 👋 
