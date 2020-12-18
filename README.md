@@ -27,7 +27,7 @@ Para llevar a cabo esta tarea se ha partido de unas piezas de CAD diseñadas dig
 
 **2-Configurar un envío de alarma a tu email si se supera un valor del 70% de humedad.**
 
-Con ayuda de Particle se ha realizado la programación correspondiente al Arduino que integra todos los sensores que recogen los datos ambientales del lugar en el que se encuentra el robot. A modo de ejemplo se muestra este fragmento del programa con extensión JSON.
+Con ayuda de Particle se ha realizado la programación correspondiente al Arduino que integra todos los sensores que recogen los datos ambientales del lugar en el que se encuentra el robot. A modo de ejemplo se muestra un fragmento del programa con extensión JSON así como una captura de otro fragmento del programa.
 
 ```js
 void setup() {
@@ -42,6 +42,8 @@ Particle.variable("VOC", voc);
 Particle.variable("Noise", n);
 }
 ```
+
+![Particle](https://github.com/Iranzubp/Grupo_2_IMH/blob/main/Flujo%20y%20Visualizacion%20de%20Datos/Particle.JPG)
 
 Para llevar a cabo esta tarea se ha comenzado con el diseño del flujo en Node-Red considerando los diferentes datos conseguidos con el multisensor. Para mejorar la visualización de dichos datos en el dashboard se pueden ver una serie de gráficos acompañados de luces LED que indican el estado del dispositivo, así como unas notificaciones emergentes con recomendaciones. 
 
