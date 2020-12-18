@@ -1,0 +1,865 @@
+[
+    {
+        "id": "84355386.41d6e",
+        "type": "tab",
+        "label": "Node Grupo 2",
+        "disabled": false,
+        "info": ""
+    },
+    {
+        "id": "3c62a9ca.618466",
+        "type": "inject",
+        "z": "84355386.41d6e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "vt": "str"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 90,
+        "y": 240,
+        "wires": [
+            [
+                "62629f4a.c8043",
+                "60c2e227.43f9bc",
+                "d44b9dc9.62caa",
+                "5012ecb9.235224"
+            ]
+        ]
+    },
+    {
+        "id": "bff7c6ec.9eef28",
+        "type": "debug",
+        "z": "84355386.41d6e",
+        "name": "Log datos",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "true",
+        "targetType": "full",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 620,
+        "y": 160,
+        "wires": []
+    },
+    {
+        "id": "e0ed66c7.0fa298",
+        "type": "ui_gauge",
+        "z": "84355386.41d6e",
+        "name": "Temperatura",
+        "group": "a7d7b555.9504b8",
+        "order": 3,
+        "width": "6",
+        "height": "4",
+        "gtype": "gage",
+        "title": "Temperatura (ºC)",
+        "label": "ºC",
+        "format": "{{value}}",
+        "min": "-10",
+        "max": "45",
+        "colors": [
+            "#81cefd",
+            "#fdb926",
+            "#fb7e09"
+        ],
+        "seg1": "10",
+        "seg2": "25",
+        "x": 1010,
+        "y": 180,
+        "wires": []
+    },
+    {
+        "id": "ba35ffca.a4aaa",
+        "type": "ui_chart",
+        "z": "84355386.41d6e",
+        "name": "Res Humedad",
+        "group": "d1e5b4d6.4c515",
+        "order": 5,
+        "width": "6",
+        "height": "2",
+        "label": "Humedad (% )",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Information should be seen soon",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#2680c0",
+            "#aec7e8",
+            "#ea8b39",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1400,
+        "y": 300,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "678e607b.461a",
+        "type": "e-mail",
+        "z": "84355386.41d6e",
+        "server": "smtp.gmail.com",
+        "port": "587",
+        "secure": false,
+        "tls": true,
+        "name": "laidagar12@gmail.com",
+        "dname": "Enviar Email",
+        "x": 650,
+        "y": 660,
+        "wires": []
+    },
+    {
+        "id": "cdc40421.322698",
+        "type": "function",
+        "z": "84355386.41d6e",
+        "name": "Si la humedad es > 70%",
+        "func": "if(msg.payload.name && msg.payload.name==\"Humedad\"){\nvar humidity=Math.floor(parseFloat(msg.payload.data).toFixed(2));\n if(humidity>70){\n\n        msg.payload=\"La humedad está por encima de \"+humidity+\"%\"; \n        msg.to=\"laidagar12@gmail.com\";\n        msg.topic=\"Armeria Eskola Iot\";\n        return msg;\n    }\n  \n  \n}\n\n",
+        "outputs": 1,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 410,
+        "y": 560,
+        "wires": [
+            [
+                "678e607b.461a"
+            ]
+        ]
+    },
+    {
+        "id": "794503a6.a520cc",
+        "type": "debug",
+        "z": "84355386.41d6e",
+        "name": "",
+        "active": true,
+        "tosidebar": true,
+        "console": false,
+        "tostatus": false,
+        "complete": "payload",
+        "targetType": "msg",
+        "statusVal": "",
+        "statusType": "auto",
+        "x": 690,
+        "y": 560,
+        "wires": []
+    },
+    {
+        "id": "be32cc15.a8f0c",
+        "type": "function",
+        "z": "84355386.41d6e",
+        "name": "Parsear para los gráficos",
+        "func": "var msg1={};\nvar msg2={};\nvar msg3={};\nvar msg4={};\nvar msg5={};\nvar msg6={};\n\nif(msg.payload.name && msg.payload.name==\"Temperatura\"){\n\nmsg1.payload=Math.floor(parseFloat(msg.payload.data).toFixed(2));\n\nreturn[msg1, null, null]; \n\n}\n\nif(msg.payload.name && msg.payload.name==\"Humedad\"){\n\nmsg2.payload=Math.floor(parseFloat(msg.payload.data).toFixed(2));\n\n\nreturn[null,msg2, null]; \n}\n\nif(msg.payload.name && msg.payload.name==\"spark/status\"){\n\n    if(msg.payload.data==\"online\"){\n        \n        msg3.payload=true; \n        \n    }else if(msg.payload.data==\"offline\"){\n\n        msg3.payload=false;\n    }\n\nreturn[null,null,msg3]; \n}\n\n//Añadido\nif(msg.payload.name && msg.payload.name==\"eCO2\"){\n\nmsg4.payload=Math.floor(parseInt(msg.payload.data).toFixed(2));\n//msg4.topic=\"Line1\";\n\nreturn[null, null, null,msg4]; \n}\n\nif(msg.payload.name && msg.payload.name==\"TVOC\"){\n\nmsg5.payload=Math.floor(parseInt(msg.payload.data).toFixed(2));\n//msg5.topic=\"Line2\";\n\nreturn[null,null,null,null,msg5]; \n}\n\n\nif(msg.payload.name && msg.payload.name==\"Noise\"){\n\nmsg6.payload=Math.floor(parseFloat(msg.payload.data).toFixed(2));\n\n\nreturn[null,null,null,null,null,msg6]; \n}\n\n\n\n\n\n",
+        "outputs": 7,
+        "noerr": 0,
+        "initialize": "",
+        "finalize": "",
+        "x": 650,
+        "y": 380,
+        "wires": [
+            [
+                "e0ed66c7.0fa298",
+                "794503a6.a520cc",
+                "9ab1064f.d63d38",
+                "f398d7a2.8ad0f8"
+            ],
+            [
+                "ba35ffca.a4aaa",
+                "794503a6.a520cc",
+                "1b7559c4.0dd926"
+            ],
+            [
+                "3645d7d4.f58f98",
+                "794503a6.a520cc",
+                "23826915.115826",
+                "8c711b0c.43dcb8",
+                "f4422c95.98608",
+                "9b4dcc06.2652c"
+            ],
+            [
+                "863161a4.a5d4e"
+            ],
+            [
+                "2fa93140.8c156e"
+            ],
+            [
+                "ddd2a4d2.d92fe8"
+            ],
+            []
+        ],
+        "outputLabels": [
+            "Temperatura",
+            "Humidad",
+            "Spark/status",
+            "",
+            "",
+            "",
+            ""
+        ]
+    },
+    {
+        "id": "62629f4a.c8043",
+        "type": "particle-SSE",
+        "z": "84355386.41d6e",
+        "pcloud": "",
+        "subscribetype": "devid",
+        "devprodslug": "e00fce68d503cd57cf4fd99e",
+        "devid": "",
+        "evtname": "",
+        "strict": false,
+        "x": 280,
+        "y": 380,
+        "wires": [
+            [
+                "bff7c6ec.9eef28",
+                "cdc40421.322698",
+                "be32cc15.a8f0c"
+            ]
+        ]
+    },
+    {
+        "id": "3645d7d4.f58f98",
+        "type": "ui_led",
+        "z": "84355386.41d6e",
+        "group": "a7d7b555.9504b8",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Confort ambiental On/Off",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "false",
+                "valueType": "bool"
+            },
+            {
+                "color": "green",
+                "value": "true",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Confort ambiental On/Off",
+        "x": 1090,
+        "y": 360,
+        "wires": []
+    },
+    {
+        "id": "863161a4.a5d4e",
+        "type": "ui_chart",
+        "z": "84355386.41d6e",
+        "name": "eCO2",
+        "group": "a7d7b555.9504b8",
+        "order": 5,
+        "width": "6",
+        "height": "4",
+        "label": "eCO2 (PPM)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 420,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "2fa93140.8c156e",
+        "type": "ui_chart",
+        "z": "84355386.41d6e",
+        "name": "TVOC",
+        "group": "2d164e96.bca242",
+        "order": 5,
+        "width": "6",
+        "height": "4",
+        "label": "tVOC (PPM)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 540,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "23826915.115826",
+        "type": "ui_led",
+        "z": "84355386.41d6e",
+        "group": "2d164e96.bca242",
+        "order": 4,
+        "width": "6",
+        "height": "1",
+        "label": "Calidad del aire On/Off          ",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "false",
+                "valueType": "bool"
+            },
+            {
+                "color": "green",
+                "value": "true",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Calidad del aire On/Off",
+        "x": 1060,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "60c2e227.43f9bc",
+        "type": "ui_media",
+        "z": "84355386.41d6e",
+        "group": "a7d7b555.9504b8",
+        "name": "IMH",
+        "width": "6",
+        "height": "2",
+        "order": 1,
+        "category": "Logo",
+        "file": "logo.JPG",
+        "layout": "adjust",
+        "showcontrols": true,
+        "loop": true,
+        "onstart": true,
+        "scope": "local",
+        "tooltip": "",
+        "x": 270,
+        "y": 140,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "ddd2a4d2.d92fe8",
+        "type": "ui_chart",
+        "z": "84355386.41d6e",
+        "name": "Ruido",
+        "group": "d1e5b4d6.4c515",
+        "order": 7,
+        "width": "6",
+        "height": "4",
+        "label": "Ruido (dB)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "",
+        "dot": false,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#1f77b4",
+            "#aec7e8",
+            "#ff7f0e",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1010,
+        "y": 600,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "8c711b0c.43dcb8",
+        "type": "ui_led",
+        "z": "84355386.41d6e",
+        "group": "d1e5b4d6.4c515",
+        "order": 6,
+        "width": 0,
+        "height": 0,
+        "label": "Ruido On/Off",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "false",
+                "valueType": "bool"
+            },
+            {
+                "color": "green",
+                "value": "true",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Ruido On/Off",
+        "x": 1030,
+        "y": 640,
+        "wires": []
+    },
+    {
+        "id": "d44b9dc9.62caa",
+        "type": "ui_media",
+        "z": "84355386.41d6e",
+        "group": "7eea39b5.8795f8",
+        "name": "QR",
+        "width": 0,
+        "height": 0,
+        "order": 0,
+        "category": "QR",
+        "file": "QR.png",
+        "layout": "expand",
+        "showcontrols": true,
+        "loop": true,
+        "onstart": false,
+        "scope": "local",
+        "tooltip": "",
+        "x": 230,
+        "y": 80,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "5012ecb9.235224",
+        "type": "ui_media",
+        "z": "84355386.41d6e",
+        "group": "d1e5b4d6.4c515",
+        "name": "Robot",
+        "width": "6",
+        "height": "2",
+        "order": 1,
+        "category": "texto",
+        "file": "robot.JPG",
+        "layout": "adjust",
+        "showcontrols": true,
+        "loop": true,
+        "onstart": true,
+        "scope": "local",
+        "tooltip": "",
+        "x": 310,
+        "y": 200,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "f4422c95.98608",
+        "type": "ui_led",
+        "z": "84355386.41d6e",
+        "group": "2d164e96.bca242",
+        "order": 2,
+        "width": 0,
+        "height": 0,
+        "label": "Confort ambiental On/Off",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "false",
+                "valueType": "bool"
+            },
+            {
+                "color": "green",
+                "value": "true",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Confort ambiental On/Off",
+        "x": 1090,
+        "y": 240,
+        "wires": []
+    },
+    {
+        "id": "1b7559c4.0dd926",
+        "type": "ui_gauge",
+        "z": "84355386.41d6e",
+        "name": "Humedad",
+        "group": "2d164e96.bca242",
+        "order": 3,
+        "width": "6",
+        "height": "4",
+        "gtype": "wave",
+        "title": "Humedad (%)",
+        "label": "%",
+        "format": "{{value}}",
+        "min": "0",
+        "max": "100",
+        "colors": [
+            "#81cefd",
+            "#fdb926",
+            "#fb7e09"
+        ],
+        "seg1": "10",
+        "seg2": "25",
+        "x": 1040,
+        "y": 300,
+        "wires": []
+    },
+    {
+        "id": "9ab1064f.d63d38",
+        "type": "ui_chart",
+        "z": "84355386.41d6e",
+        "name": "Res Temperatura",
+        "group": "d1e5b4d6.4c515",
+        "order": 4,
+        "width": "6",
+        "height": "2",
+        "label": "Temperatura (ºC)",
+        "chartType": "line",
+        "legend": "false",
+        "xformat": "HH:mm:ss",
+        "interpolate": "linear",
+        "nodata": "Information should be seen soon",
+        "dot": true,
+        "ymin": "",
+        "ymax": "",
+        "removeOlder": 1,
+        "removeOlderPoints": "",
+        "removeOlderUnit": "86400",
+        "cutout": 0,
+        "useOneColor": false,
+        "useUTC": false,
+        "colors": [
+            "#2680c0",
+            "#aec7e8",
+            "#ea8b39",
+            "#2ca02c",
+            "#98df8a",
+            "#d62728",
+            "#ff9896",
+            "#9467bd",
+            "#c5b0d5"
+        ],
+        "useOldStyle": false,
+        "outputs": 1,
+        "x": 1410,
+        "y": 240,
+        "wires": [
+            []
+        ]
+    },
+    {
+        "id": "904358ef.ec1488",
+        "type": "ui_text",
+        "z": "84355386.41d6e",
+        "group": "d1e5b4d6.4c515",
+        "order": 2,
+        "width": "6",
+        "height": "1",
+        "name": "Resumen",
+        "label": "Resumen",
+        "format": "",
+        "layout": "row-left",
+        "x": 1400,
+        "y": 200,
+        "wires": []
+    },
+    {
+        "id": "9b4dcc06.2652c",
+        "type": "ui_led",
+        "z": "84355386.41d6e",
+        "group": "a7d7b555.9504b8",
+        "order": 4,
+        "width": "0",
+        "height": "0",
+        "label": "Calidad del aire On/Off",
+        "labelPlacement": "left",
+        "labelAlignment": "left",
+        "colorForValue": [
+            {
+                "color": "red",
+                "value": "false",
+                "valueType": "bool"
+            },
+            {
+                "color": "green",
+                "value": "true",
+                "valueType": "bool"
+            }
+        ],
+        "allowColorForValueInMessage": false,
+        "name": "Calidad del aire On/Off",
+        "x": 1280,
+        "y": 460,
+        "wires": []
+    },
+    {
+        "id": "ece137a5.768488",
+        "type": "ui_toast",
+        "z": "84355386.41d6e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "blue",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": true,
+        "topic": "Hace frio, abrigate",
+        "name": "Hace frio, abrigate",
+        "x": 1550,
+        "y": 20,
+        "wires": []
+    },
+    {
+        "id": "f398d7a2.8ad0f8",
+        "type": "switch",
+        "z": "84355386.41d6e",
+        "name": "",
+        "property": "payload",
+        "propertyType": "msg",
+        "rules": [
+            {
+                "t": "lte",
+                "v": "10",
+                "vt": "num"
+            },
+            {
+                "t": "btwn",
+                "v": "11",
+                "vt": "num",
+                "v2": "24",
+                "v2t": "num"
+            },
+            {
+                "t": "gte",
+                "v": "25",
+                "vt": "str"
+            }
+        ],
+        "checkall": "true",
+        "repair": false,
+        "outputs": 3,
+        "x": 1270,
+        "y": 40,
+        "wires": [
+            [
+                "ece137a5.768488"
+            ],
+            [
+                "7e0f0610.19d438"
+            ],
+            [
+                "f33a1c35.900ad"
+            ]
+        ],
+        "inputLabels": [
+            "msg1.payload"
+        ]
+    },
+    {
+        "id": "1b8619d6.7603b6",
+        "type": "inject",
+        "z": "84355386.41d6e",
+        "name": "",
+        "props": [
+            {
+                "p": "payload"
+            },
+            {
+                "p": "topic",
+                "v": "true",
+                "vt": "bool"
+            }
+        ],
+        "repeat": "",
+        "crontab": "",
+        "once": false,
+        "onceDelay": 0.1,
+        "topic": "",
+        "payload": "true",
+        "payloadType": "bool",
+        "x": 1110,
+        "y": 40,
+        "wires": [
+            [
+                "f398d7a2.8ad0f8"
+            ]
+        ]
+    },
+    {
+        "id": "7e0f0610.19d438",
+        "type": "ui_toast",
+        "z": "84355386.41d6e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "blue",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": true,
+        "topic": "Hace bueno, disfruta",
+        "name": "Hace bueno, disfruta",
+        "x": 1560,
+        "y": 60,
+        "wires": []
+    },
+    {
+        "id": "f33a1c35.900ad",
+        "type": "ui_toast",
+        "z": "84355386.41d6e",
+        "position": "top right",
+        "displayTime": "5",
+        "highlight": "blue",
+        "sendall": true,
+        "outputs": 0,
+        "ok": "OK",
+        "cancel": "",
+        "raw": true,
+        "topic": "Hace calor, date un baño",
+        "name": "Hace calor, date un baño",
+        "x": 1570,
+        "y": 100,
+        "wires": []
+    },
+    {
+        "id": "a7d7b555.9504b8",
+        "type": "ui_group",
+        "name": "Columna 1",
+        "tab": "7ca33a50.bef344",
+        "order": 1,
+        "disp": false,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "d1e5b4d6.4c515",
+        "type": "ui_group",
+        "name": "Resumen",
+        "tab": "7ca33a50.bef344",
+        "order": 3,
+        "disp": false,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "2d164e96.bca242",
+        "type": "ui_group",
+        "name": "Columna 2",
+        "tab": "7ca33a50.bef344",
+        "order": 2,
+        "disp": false,
+        "width": "6",
+        "collapse": false
+    },
+    {
+        "id": "7eea39b5.8795f8",
+        "type": "ui_group",
+        "name": "Escanee el QR y cuando abra el enlace apunte al logo de IMH",
+        "tab": "9f1ecc55.49e0e",
+        "order": 1,
+        "disp": true,
+        "width": "16",
+        "collapse": false
+    },
+    {
+        "id": "7ca33a50.bef344",
+        "type": "ui_tab",
+        "name": "                                  Panel de control",
+        "icon": "dashboard",
+        "order": 1,
+        "disabled": false,
+        "hidden": false
+    },
+    {
+        "id": "9f1ecc55.49e0e",
+        "type": "ui_tab",
+        "name": "QR Realidad Aumentada",
+        "icon": "dashboard",
+        "order": 4,
+        "disabled": false,
+        "hidden": false
+    }
+]
