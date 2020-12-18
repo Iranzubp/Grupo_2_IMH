@@ -67,7 +67,7 @@ Se ha programado el sistema para comenzar su funcionamiento pulsando el botón d
 
 Se ha empleado Tableau como herramienta de visualización que permite ver los datos ambientales del aula a través de una historia en la que se muestran los datos obtenidos por medio diferentes gráficas y mapas. En la historia, aparecen tres pestañas que permiten ver un enfoque global de los datos. La primera pestaña muestra los datos más relevantes de las condiciones ambientales. En las siguientes imágenes, se muestran gráficos que comparan el resto de datos obtenidos y enriquecen el análisis de las condiciones ambientales.
 
-(https://public.tableau.com/profile/iranzu#!/vizhome/Grupo_2_IMH/Historia1?:showVizHome=no)
+						https://public.tableau.com/profile/iranzu#!/vizhome/Grupo_2_IMH/Historia1?:showVizHome=no
 
 ![Tableau (1)](https://github.com/Iranzubp/Grupo_2_IMH/blob/main/Visualizacion%20con%20Tableau%20de%20Datos%20Ambientales/Tableau%20(1).png)
 ![Tableau (2)](https://github.com/Iranzubp/Grupo_2_IMH/blob/main/Visualizacion%20con%20Tableau%20de%20Datos%20Ambientales/Tableau%20(2).png)
