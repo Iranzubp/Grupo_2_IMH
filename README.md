@@ -43,7 +43,7 @@ Particle.variable("Noise", n);
 }
 ```
 
-![Particle](https://github.com/Iranzubp/Grupo_2_IMH/blob/main/Flujo%20y%20Visualizacion%20de%20Datos/Particle.JPG)
+![Particle](https://github.com/Iranzubp/Grupo_2_IMH/blob/main/Flujo%20y%20Visualizacion%20de%20Datos/Particle.png)
 
 Para llevar a cabo esta tarea se ha comenzado con el diseño del flujo en Node-Red considerando los diferentes datos conseguidos con el multisensor. Para mejorar la visualización de dichos datos en el dashboard se pueden ver una serie de gráficos acompañados de luces LED que indican el estado del dispositivo, así como unas notificaciones emergentes con recomendaciones. 
 
